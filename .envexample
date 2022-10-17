@@ -1,0 +1,4 @@
+NAME: ""
+PORT: 0000
+DB_HOST: ""
+SECRET: process.env.SECRET || ""
