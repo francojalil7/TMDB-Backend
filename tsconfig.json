@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
-  }
+      "esModuleInterop": true,
+      "outDir": "./dist",
+      "allowJs": true,
+      "target": "es5"
+  },
+  "include": [
+      "./src/**/*"
+  ],
 }

@@ -1,9 +1,9 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("tmdb", null, null, {
+const sequelize = new Sequelize("tmdb", null, "3097CHULAS", {
   host: "localhost",
   dialect: "postgres",
-  logging: true,
+  password: "3097CHULAS"
 });
 
 export default sequelize;
