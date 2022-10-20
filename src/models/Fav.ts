@@ -1,18 +1,12 @@
-const { S, DataTypes, Model } = require("sequelize");
-import db from "../config/db";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import { fav } from "../interfaces/fav.interface";
 
-class Fav extends Model {}
-Fav.init(
-  {
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    poster: {
-      type: DataTypes.STRING,
-    },
+const FavSchema = new mongoose.Schema<fav>({
+  title: {
+    type: String,
   },
-  { sequelize: db, modelName: "fav" }
-);
+  poster: { type: String },
+});
 
-export default Fav;
+export default mongoose.model("Fav", FavSchema);

@@ -1,70 +1,50 @@
-const { S, DataTypes, Model } = require("sequelize");
-const db = require("../config/db");
-const bcrypt = require("bcrypt");
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import { user } from "../interfaces/user.interface";
 
-interface user {
-  name: string;
-  lastname: string;
-  email: string;
-  password: string;
-  salt: string;
-  hashedPassword: Function;
-}
-
-class User extends Model {
-  hashedPassword(password: string, salt: string) {
-    return bcrypt.hash(password, salt);
-  }
-  validatePassword(password: string) {
-    return this.hashedPassword(password, this.salt).then(
-      (newHash: string) => newHash === this.password
-    );
-  }
-}
-
-User.init(
-  {
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
-    },
-
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    lastname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-
-    salt: {
-      type: DataTypes.STRING,
-    },
+const UserSchema = new mongoose.Schema<user>({
+  name: {
+    type: String,
+    required: true,
   },
-  {
-    sequelize: db,
-    modelName: "user",
-  }
-);
-
-User.beforeCreate((user: user) => {
-  const salt = bcrypt.genSaltSync();
-  user.salt = salt;
-
-  return user.hashedPassword(user.password, user.salt).then((hash: string) => {
-    user.password = hash;
-  });
+  lastname: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: [true, "Please enter an email"],
+    unique: true,
+  },
+  password: {
+    type: String,
+    minlength: [7, "Minimun password length is 7 characters"],
+  },
+  salt: {
+    type: String,
+  },
 });
 
-export default User;
+// Schema Hook => has de la password y creacion del salt del usuario
+UserSchema.pre("save", async function () {
+  if (!this.salt && this.password) {
+    this.salt = bcrypt.genSaltSync();
+    return (this.password = await bcrypt.hash(this.password, this.salt));
+  }
+});
+
+UserSchema.methods.validatePassword = function validatePassword(password) {
+  return bcrypt
+    .hash(password, this.salt)
+    .then((newHash) => newHash === this.password);
+};
+
+UserSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id;
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
+export default mongoose.model("User", UserSchema);
