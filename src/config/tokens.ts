@@ -1,13 +1,15 @@
-const jwt = require("jsonwebtoken");
-const SECRET = process.env.SECRET
 
-const generateToken = (payload: {}) => {
-    const token = jwt.sign({user: payload}, SECRET, {expiresIn: "2d"})
-    return token;
-};
 
-const validateToken = (token: string) => {
-    return jwt.verify(token, SECRET)
-};
+const {validateToken} = require("../config/tokens")
 
-module.exports = {generateToken, validateToken};
+function validateAuth(req,res,next){
+    const token = req.cookies.token;
+    if(!token) return res.sendStatus(401);
+
+    const {user}= validateToken(token)
+    if(!user) return res.sendStatus(401)
+        req.user = user
+        next();
+}
+
+module.exports = {validateAuth};

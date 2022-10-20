@@ -5,13 +5,14 @@ import bodyParser from "body-parser";
 import morgan from "morgan"
 import routes from "./routes"
 import cookieParser from "cookie-parser";
+import cors from "cors"
 
 const app: express.Application = express();
 dotenv.config()
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(cors())
 app.use('/api', routes)
 
 app.get("/", function (req, res) {
@@ -24,5 +25,5 @@ app.use((err:any, req:any, res:any, next:any):any=>{
 
 db.sync({ force: false }).then(() => {
   console.log("DB CONECTADA");
-  app.listen(3001, () => console.log(`server listenning on port 3001`));
+  app.listen(0, () => console.log(`server listenning`));
 });
