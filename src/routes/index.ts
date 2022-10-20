@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+import {authRouter} from "./auth"
 
-console.log("ROUTES")
+router.use("/auth", authRouter)
+
+
 export default router;
