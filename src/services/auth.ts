@@ -6,7 +6,6 @@ import { encrypt, verified } from "../utils/bcrypt";
 import { generateToken } from "../utils/jwt.handle";
 
 const registerNewUser = async ({ email, password, name,lastname }: user) => {
-  console.log("USER", email,password,name,lastname)
   const checkIs = await UserModel.findOne({ email });
   if (checkIs) return "ALREADY_USER";
   const passHash = await encrypt(password); //TODO 12345678
