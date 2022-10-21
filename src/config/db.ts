@@ -1,9 +1,9 @@
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-const contrasenia = process.env.PASSWORD
-console.log("🚀 ~ file: db.ts ~ line 4 ~ contrasenia", contrasenia)
-const client = mongoose.connect(process.env.PASSWORD)
-.then(()=>console.log("ssuccesfully db connected"))
-.catch(err => console.error(err))
+import "dotenv/config";
+import { connect } from "mongoose";
 
-export default client;
+async function dbConnect(): Promise<void> {
+  const DB_URI = <string>process.env.PASSWORD;
+  await connect(DB_URI);
+}
+
+export default dbConnect;

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import { user } from "../interfaces/user.interface";
 
 const UserSchema = new mongoose.Schema<user>({
@@ -25,27 +24,6 @@ const UserSchema = new mongoose.Schema<user>({
   },
 });
 
-// Schema Hook => has de la password y creacion del salt del usuario
-UserSchema.pre("save", async function () {
-  if (!this.salt && this.password) {
-    this.salt = bcrypt.genSaltSync();
-    return (this.password = await bcrypt.hash(this.password, this.salt));
-  }
-});
-
-UserSchema.methods.validatePassword = function validatePassword(password) {
-  return bcrypt
-    .hash(password, this.salt)
-    .then((newHash) => newHash === this.password);
-};
-
-UserSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id;
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
 
 const UserModel = mongoose.model("User", UserSchema);
 export default UserModel;

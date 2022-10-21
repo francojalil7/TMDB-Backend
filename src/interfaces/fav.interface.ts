@@ -1,4 +1,7 @@
 export interface fav {
-    title: string;
-    poster: string;
+  userId: string;
+  tmdbId: string;
+  title: string;
+  poster?: string;
+  overview: string;
 }

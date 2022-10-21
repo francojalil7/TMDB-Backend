@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import { fav } from "../interfaces/fav.interface";
 
 const FavSchema = new mongoose.Schema<fav>({
-  title: {
-    type: String,
-  },
+  tmdbId: { type: String },
+  title: { type: String },
   poster: { type: String },
+  userId: { type: String },
+  overview: { type: String },
 });
 
-export default mongoose.model("Fav", FavSchema);
+const FavModel = mongoose.model("Fav", FavSchema);
+export default FavModel;

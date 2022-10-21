@@ -1,8 +1,11 @@
 import express from "express"
-const userRouter = express.Router();
+import UserModel from "../models/User";
+const router = express.Router();
 
-userRouter.get("/", (req,res)=>{
-    res.send("HOLA")
+router.get("/", async (req,res)=>{
+    const users = await UserModel.find({})
+    console.log("🚀 ~ file: userRouter.ts ~ line 7 ~ router.get ~ users", typeof users[0]._id)
+    res.send(users)
 })
 
-export default userRouter;
+export default router;

@@ -1,7 +1,7 @@
 
 import { Auth } from "../interfaces/auth.interface";
 import { user } from "../interfaces/user.interface";
-import UserModel from "../models/user";
+import UserModel from "../models/User";
 import { encrypt, verified } from "../utils/bcrypt";
 import { generateToken } from "../utils/jwt.handle";
 
@@ -16,7 +16,6 @@ const registerNewUser = async ({ email, password, name,lastname }: user) => {
     name,
     lastname,
   });
-  //TODO 123456
   return registerNewUser;
 };
 

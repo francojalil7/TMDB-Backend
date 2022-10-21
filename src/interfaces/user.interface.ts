@@ -4,4 +4,5 @@ export interface user {
     email:string;
     password:string;
     salt?:string;
+    id:string;
 }
