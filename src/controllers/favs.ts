@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
+import { request } from "http";
 import { fav } from "../interfaces/fav.interface";
+import FavModel from "../models/Fav";
 import UserModel from "../models/User";
-import { addFav } from "../services/favs";
+import { addFav, getFav } from "../services/favs";
 
-export const addFavCtrl = async ({ params, body }: Request, res: Response) => {
+export const getCtrl = async (req: Request, res: Response) => {
+  const favs = await FavModel.find({ userId: req.body.userId });
+  res.send(favs);
+};
+
+export const addCtrl = async ({ params, body }: Request, res: Response) => {
   const [user] = await UserModel.find({ id: body.userId });
   const { title, overview, poster, tmdbId } = body;
-  console.log("🚀 ~ file: favs.ts ~ line 9 ~ addFavCtrl ~ body", body)
   const newFav: fav = {
     title,
     overview,
@@ -15,8 +21,15 @@ export const addFavCtrl = async ({ params, body }: Request, res: Response) => {
     userId: user.id,
   };
   const favorite = await addFav(newFav);
-  console.log("🚀 ~ file: favs.ts ~ line 17 ~ addFavCtrl ~ favorite", favorite)
   res.send(favorite);
 };
 
-export default { addFavCtrl };
+export const removeCtrl = ({ body }: Request, res: Response, next) => {
+  const { id } = body;
+  FavModel.findByIdAndRemove(id)
+    .then((result) => {
+      res.status(204).end();
+    })
+    .catch((error) => next(error));
+};
+export default { addCtrl, removeCtrl, getCtrl };

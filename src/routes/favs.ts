@@ -1,10 +1,10 @@
 import express from "express";
-import { addFavCtrl } from "../controllers/favs";
-import { fav } from "../interfaces/fav.interface";
-import UserModel from "../models/User";
-import { addFav } from "../services/favs";
+import { getCtrl, addCtrl, removeCtrl } from "../controllers/favs";
+import FavModel from "../models/Fav";
 const router = express.Router();
 
-router.post("/:id", addFavCtrl);
+router.get("/",getCtrl);
+router.post("/", addCtrl);
+router.delete("/", removeCtrl);
 
 export default router;

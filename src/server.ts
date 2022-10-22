@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import db from "./config/db";
 import morgan from "morgan";
@@ -14,13 +14,12 @@ app.use(cookieParser());
 
 app.use(routes);
 
-app.get("/", function (req, res) {
-  res.send("Hello World!");
-});
-app.use((err: any, req: any, res: any, next: any): any => {
+app.use((err: any, req: Request, res: Response, next: any): any => {
   console.error;
   res.status(500).send(err);
 });
 
-db().then(() => console.log("Conexion Ready"));
-app.listen(3001, () => console.log(`server listenning on port 3001`));
+db().then(() => {
+  console.log("DB Conexion Ready");
+  app.listen(3001, () => console.log(`server listenning on port 3001`));
+});
