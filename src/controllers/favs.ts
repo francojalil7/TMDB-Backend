@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { request } from "http";
 import { fav } from "../interfaces/fav.interface";
 import FavModel from "../models/Fav";
@@ -24,7 +24,7 @@ export const addCtrl = async ({ params, body }: Request, res: Response) => {
   res.send(favorite);
 };
 
-export const removeCtrl = ({ body }: Request, res: Response, next) => {
+export const removeCtrl = ({ body }: Request, res: Response, next: NextFunction) => {
   const { id } = body;
   FavModel.findByIdAndRemove(id)
     .then((result) => {
