@@ -32,6 +32,7 @@ const loginUser = async ({ email, password }: Auth) => {
     token,
     user: checkIs,
   };
+  
   return data;
 };
 
