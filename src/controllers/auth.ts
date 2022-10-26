@@ -4,7 +4,7 @@ import { registerNewUser, loginUser } from "../services/auth";
 
 export const registerCtrl = async ({ body }: Request, res: Response) => {
   const responseUser = await registerNewUser(body);
-  res.send(responseUser);
+  res.status(201).send(responseUser);
 };
 
 export const loginCtrl = async ({ body }: Request, res: Response) => {
