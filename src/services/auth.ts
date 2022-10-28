@@ -28,9 +28,17 @@ const loginUser = async ({ email, password }: Auth) => {
   if (!isCorrect) return "PASSWORD_INCORRECT";
 
   const token = generateToken(checkIs.email);
+
+  const payload = {
+    email: checkIs.email,
+    name: checkIs.name,
+    lastname: checkIs.lastname,
+    id: checkIs.id,
+  };
+
   const data = {
     token,
-    user: checkIs,
+    payload,
   };
   return data;
 };
