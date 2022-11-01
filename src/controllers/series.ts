@@ -12,6 +12,18 @@ export const getSeriesCtrl = async (req: Request, res: Response) => {
   }
 };
 
+export const topRatedCtrl = async (req: Request, res: Response) => {
+  try {
+    const topRated = await axios.get(
+      `https://api.themoviedb.org/3/tv/top_rated?${process.env.API_KEY}&language=es&page=1`
+    );
+    res.send(topRated.data.results);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(404);
+  }
+};
+
 export const getPopularesCtrl = async (req: Request, res: Response) => {
   try {
     const recentSeries = await axios.get(
@@ -34,13 +46,3 @@ export const searchSeriesCtrl = async ({ params }: Request, res: Response) => {
   }
 };
 
-export const topRatedCtrl = async (req: Request, res: Response) => {
-  try {
-    const recentSeries = await axios.get(
-      `https://api.themoviedb.org/3/tv/top_rated?${process.env.API_KEY}&language=es&page=1`
-    );
-    res.send(recentSeries.data.results);
-  } catch (error) {
-    res.sendStatus(404);
-  }
-};

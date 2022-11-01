@@ -9,7 +9,7 @@ const router = Router();
 
 router.get("/", getSeriesCtrl);
 router.get("/popular", getPopularesCtrl);
-router.get("topRated", topRatedCtrl);
+router.get("/rated", topRatedCtrl);
 router.get("/search/:searchValue", searchSeriesCtrl);
 
 export default router;
